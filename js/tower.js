@@ -18,7 +18,7 @@
       PLAYER_HEIGHT = METER * 2,                                            // player logical height
       GROUND_SPEED  = 2,                                                    // how fast ground scrolls left-right
       GRAVITY       = 9.8 * 3,                                              // (exagerated) gravity
-      MAXDX         = 10,                                                   // player max horizontal speed (meters per second)
+      MAXDX         = 15,                                                     // player max horizontal speed (meters per second)
       MAXDY         = (ROW_SURFACE*FPS/METER),                              // player max vertical speed (meters per second) - ENSURES CANNOT FALL THROUGH PLATFORM SURFACE
       CLIMBDY       = 8,                                                    // player climbing speed (meters per second)
       ACCEL         = 1/4,                                                  // player take 1/4 second to reach maxdx (horizontal acceleration)
@@ -42,10 +42,10 @@
         JUMP: {x: 0, y: 138, w: 64, h: 52, frames: 6,  fps: 10 }
       },
       MONSTERS = [
-        { name: "SOCIAL", nx: -0.5, ny: -0.5, w: 1.5*METER, h: 1.5*METER, speed: 4*METER, dir: 'up',    vertical: true,  horizontal: false, animation: { up:   { x:   0, y:  123, w: 95, h: 95, frames: 1, fps: 5 }, down:  { x:   0, y:  123, w: 95, h: 95, frames: 1, fps: 5 } } },
-        { name: "ONION",   nx: -0.5, ny: 0, w: 2*1.15*METER, h: 2.0*METER, speed: 5*METER, dir: 'left',  vertical: false, horizontal: true,  animation: { left: { x: 280, y:  222, w: 98, h: 85, frames: 1, fps: 5 }, right: { x: 0, y:  222, w: 98, h: 85, frames: 1, fps: 5 } } },
-        { name: "LIZARD", nx: -0.5, ny:  0.0, w: 3.5*METER, h: 1.0*METER, speed: 4*METER, dir: 'right', vertical: false, horizontal: true,  animation: { left: { x: 5, y:  340, w: 59, h: 16, frames: 3, fps: 5 }, right: { x: 187, y:  340, w: 59, h: 16, frames: 3, fps: 5 } } },
-        { name: "WITCH", nx: -0.5, ny:  0.0, w: 3.25*METER, h: 3.25*1.26*METER, speed: 6*METER, dir: 'left',  vertical: false, horizontal: true,  animation: { left: { x: 0, y:  0, w: 91, h: 115, frames: 4, fps: 5 }, right: { x: 0, y:  0, w: 91, h: 115, frames: 4, fps: 5 } } }
+        { name: "SOCIAL", nx: -0.5, ny: -0.5, w: 1.5*METER, h: 1.5*METER, speed: 4*METER, dir: 'up',    vertical: true,  horizontal: false, animation: { up:   { x:   0, y:  407, w: 316, h: 316, frames: 1, fps: 5 }, down:  { x:   0, y:  407, w: 316, h: 316, frames: 1, fps: 5 } } },
+        { name: "ONION",   nx: -0.5, ny: 0, w: 2*1.15*METER, h: 2.0*METER, speed: 5*METER, dir: 'left',  vertical: false, horizontal: true,  animation: { left: { x: 928, y:  738, w: 328, h: 272, frames: 1, fps: 5 }, right: { x: 0, y:  738, w: 328, h: 272, frames: 1, fps: 5 } } },
+        { name: "LIZARD", nx: -0.5, ny:  0.0, w: 3.5*METER, h: 1.0*METER, speed: 7*METER, dir: 'right', vertical: false, horizontal: true,  animation: { left: { x: 19, y:  1128, w: 197, h: 47, frames: 3, fps:10 }, right: { x: 620, y:  1128, w: 197, h: 47, frames: 3, fps: 10 } } },
+        { name: "WITCH", nx: -0.5, ny:  0.0, w: 3.25*METER, h: 3.25*1.26*METER, speed: 6*METER, dir: 'left',  vertical: false, horizontal: true,  animation: { left: { x: 0, y:  0, w: 305, h: 378, frames: 4, fps: 8 }, right: { x: 0, y:  0, w: 305, h: 378, frames: 4, fps: 8 } } }
       ];
 
   //===========================================================================
@@ -192,7 +192,7 @@
 
     initialize: function() {
 
-      this.x         = col2x(0.5);
+      this.x         = col2x(0.5); //player initial position
       this.y         = row2y(0);
       this.w         = PLAYER_WIDTH;
       this.h         = PLAYER_HEIGHT;
@@ -216,8 +216,8 @@
       return {
         topLeft:     { x: -this.w/4, y: this.h-2 },
         topRight:    { x:  this.w/4, y: this.h-2 },
-        middleLeft:  { x: -this.w/2, y: this.h/2 },
-        middleRight: { x:  this.w/2, y: this.h/2 },
+        middleLeft:  { x: -this.w/3, y: this.h/2 },
+        middleRight: { x:  this.w/3, y: this.h/2 },
         bottomLeft:  { x: -this.w/4, y:  0       },
         bottomRight: { x:  this.w/4, y:  0       },
         underLeft:   { x: -this.w/4, y: -1       },
@@ -749,7 +749,7 @@
       this.renderScore(this.ctx);
       this.ctx.restore();
 
-      // Dom.set(debug, player.debug);
+      //Dom.set(debug, player.debug);
 
     },
 
@@ -900,7 +900,7 @@
           x1 = x0 - this.platformWidth/2,
           x2 = x0 + this.platformWidth/2;
 
-      ctx.fillStyle = Game.Math.darken(tower.color.platform, 60 * Math.min(1, Math.abs(a/90)));
+      ctx.fillStyle = Game.Math.darken(tower.color.platform, 40 * Math.min(1, Math.abs(a/90)));
       ctx.fillRect(  x1, y - ROW_HEIGHT, x2 - x1, ROW_HEIGHT);
       ctx.strokeRect(x1, y - ROW_HEIGHT, x2 - x1, ROW_HEIGHT);
    
@@ -981,7 +981,7 @@
 
     renderScore: function(ctx) {
       if (player.score > this.vscore) {
-        this.vscore = this.vscore + 2;
+        this.vscore = this.vscore+5;
         Dom.set(score, this.vscore);
       }
     },
@@ -990,7 +990,7 @@
 
     createStars: function() {
       return Game.Canvas.render(WIDTH, HEIGHT, function(ctx) {
-        var n, x, y, r, max = 500,
+        var n, x, y, r, max = 1000,
           colors = ["#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#800000", "#808000"],
           sizes  = [0.25, 0.25, 0.25, 0.25, 0.5, 0.5, 0.5, 0.5, 1, 1, 1, 1, 2, 2];
         for(n = 0 ; n < max ; n++) {
@@ -1011,11 +1011,11 @@
           color    = tower.color.wall,
           gradient = this.ctx.createLinearGradient(-radius, 0, radius, 0);
 
-      gradient.addColorStop(0,   Game.Math.darken(color, 20));
-      gradient.addColorStop(0.3, Game.Math.brighten(color, 10));
-      gradient.addColorStop(0.5, Game.Math.brighten(color, 15));
-      gradient.addColorStop(0.7, Game.Math.brighten(color, 10));
-      gradient.addColorStop(1,   Game.Math.darken(color, 20));
+      gradient.addColorStop(0,   Game.Math.darken(color, 200));
+      gradient.addColorStop(0.4, Game.Math.brighten(color, 10));
+      gradient.addColorStop(0.5, Game.Math.brighten(color, 10));
+      gradient.addColorStop(0.6, Game.Math.brighten(color, 10));
+      gradient.addColorStop(1,   Game.Math.darken(color, 2000));
 
       return gradient;
 
