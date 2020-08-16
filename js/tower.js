@@ -192,7 +192,7 @@
 
     initialize: function() {
 
-      this.x         = col2x(0.5); //player initial position
+      this.x         = col2x(5); //player initial position
       this.y         = row2y(0);
       this.w         = PLAYER_WIDTH;
       this.h         = PLAYER_HEIGHT;
